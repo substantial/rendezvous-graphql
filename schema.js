@@ -1,4 +1,5 @@
 const graphql = require("graphql");
+const data = require("./db.json");
 
 const {
   GraphQLObjectType,
@@ -33,7 +34,8 @@ const RootQuery = new GraphQLObjectType({
         id: { type: GraphQLString }
       },
       resolve(parentValue, args) {
-        console.log({ parentValue, args });
+        console.log("Root Artists", { parentValue, args });
+        return data.artists.find(a => a.id === args.id);
       }
     }
   }
