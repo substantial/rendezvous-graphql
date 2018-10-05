@@ -37,6 +37,16 @@ const RootQuery = new GraphQLObjectType({
         console.log("Root Artists", { parentValue, args });
         return data.artists.find(a => a.id === args.id);
       }
+    },
+    album: {
+      type: AlbumType,
+      args: {
+        id: { type: GraphQLString }
+      },
+      resolve(parentValue, args) {
+        console.log("Root Albums", { parentValue, args });
+        return data.albums.find(a => a.id === args.id);
+      }
     }
   }
 });
