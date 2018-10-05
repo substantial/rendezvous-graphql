@@ -1,20 +1,26 @@
 const graphql = require("graphql");
 
-const { GraphQLStringType, GraphQLObjectType } = graphql;
+const {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLSchema,
+  GraphQLList,
+  GraphQLNonNull
+} = graphql;
 
 const AlbumType = new GraphQLObjectType({
   name: "Album",
   fields: {
-    id: { type: GraphQLStringType },
-    title: { type: GraphQLStringType }
+    id: { type: GraphQLString },
+    title: { type: GraphQLString }
   }
 });
 
 const ArtistType = new GraphQLObjectType({
   name: "Artist",
   fields: {
-    id: { type: GraphQLStringType },
-    name: { type: GraphQLStringType }
+    id: { type: GraphQLString },
+    name: { type: GraphQLString }
   }
 });
 
@@ -24,9 +30,15 @@ const RootQuery = new GraphQLObjectType({
     artist: {
       type: ArtistType,
       args: {
-        id: GraphQLStringType
+        id: { type: GraphQLString }
       },
-      resolve() {}
+      resolve(parentValue, args) {
+        console.log({ parentValue, args });
+      }
     }
   }
+});
+
+module.exports = new GraphQLSchema({
+  query: RootQuery
 });
