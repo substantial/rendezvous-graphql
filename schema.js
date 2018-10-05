@@ -5,7 +5,8 @@ const {
   GraphQLObjectType,
   GraphQLString,
   GraphQLSchema,
-  GraphQLList
+  GraphQLList,
+  GraphQLNonNull
 } = graphql;
 
 const ArtistType = new GraphQLObjectType({
@@ -76,9 +77,13 @@ const mutation = new GraphQLObjectType({
     addArtist: {
       type: ArtistType,
       args: {
-        name: { type: GraphQLString }
+        name: { type: new GraphQLNonNull(GraphQLString) }
       },
-      resolve() {}
+      resolve(parentValue, { name }) {
+        return axios
+          .post("http://localhost:3000/artists", { name })
+          .then(res => res.data);
+      }
     }
   }
 });
