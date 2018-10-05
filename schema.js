@@ -2,6 +2,11 @@ const graphql = require("graphql");
 
 const { GraphQLObjectType, GraphQLString, GraphQLInt } = graphql;
 
+const users = [
+    { id: '10', firstName: 'oscar', age: 2 }
+    { id: '11', firstName: 'ivy', age: 1 }
+]
+
 const UserType = new GraphQLObjectType({
   name: "User",
   fields: {
@@ -20,7 +25,7 @@ const RootQuery = new GraphQLObjectType({
         id: { type: GraphQLString }
       }
       resolve(parentValue, args) {
-
+        return users.find(u => u.id === args.id)
       }
     }
   }
