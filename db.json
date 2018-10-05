@@ -1,0 +1,10 @@
+{
+  "artists": [
+    { "id": "10", "name": "David Bowie" },
+    { "id": "11", "name": "Bob Dylan" }
+  ],
+  "albums": [
+    { "title": "Lets Dance!" },
+    { "title": "Ziggy Stardust And The Spiders From Mars" }
+  ]
+}
