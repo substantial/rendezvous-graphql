@@ -34,7 +34,14 @@ const AlbumType = new GraphQLObjectType({
   name: "Album",
   fields: () => ({
     id: { type: GraphQLString },
-    title: { type: GraphQLString }
+    title: { type: GraphQLString },
+    artist: {
+      type: ArtistType,
+      resolve: async (parentValue, args) => {
+        console.log("Album", { parentValue, args });
+        return fetchData(`artists/${parentValue.artistId}`);
+      }
+    }
   })
 });
 
