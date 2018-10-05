@@ -4,7 +4,19 @@
     { "id": "11", "name": "Bob Dylan" }
   ],
   "albums": [
-    { "title": "Lets Dance!" },
-    { "title": "Ziggy Stardust And The Spiders From Mars" }
+    { "id": "20", "title": "Lets Dance!", "artistId": "10" },
+    {
+      "id": "21",
+      "title": "Ziggy Stardust And The Spiders From Mars",
+      "artistId": "10"
+    },
+    { "id": "22", "title": "Blood On The Tracks", "artistId": "11" }
+  ],
+  "tracks": [
+    { "id": "30", "title": "Modern Love", "albumId": "20" },
+    { "id": "31", "title": "China Girl", "albumId": "20" },
+    { "id": "32", "title": "Five Years", "albumId": "21" },
+    { "id": "33", "title": "Soul Love", "albumId": "21" },
+    { "id": "34", "title": "Tangled Up in Blue", "albumId": "22" }
   ]
 }
