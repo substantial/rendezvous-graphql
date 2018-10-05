@@ -1,31 +1,45 @@
 const graphql = require("graphql");
 const axios = require("axios");
 
-const { GraphQLObjectType, GraphQLString, GraphQLSchema } = graphql;
+const {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLSchema,
+  GraphQLList
+} = graphql;
 
 const ArtistType = new GraphQLObjectType({
   name: "Artist",
-  fields: {
+  fields: () => ({
     id: { type: GraphQLString },
-    name: { type: GraphQLString }
-  }
+    name: { type: GraphQLString },
+    albums: {
+      type: new GraphQLList(AlbumType),
+      resolve(parentValue, args) {
+        console.log("artist", { parentValue, args });
+        return axios
+          .get(`http://localhost:3000/artists/${parentValue.id}/albums`)
+          .then(response => response.data);
+      }
+    }
+  })
 });
 
 const AlbumType = new GraphQLObjectType({
   name: "Album",
-  fields: {
+  fields: () => ({
     id: { type: GraphQLString },
     title: { type: GraphQLString },
     artist: {
       type: ArtistType,
       resolve(parentValue, args) {
-        console.log(parentValue, args);
+        console.log("album", { parentValue, args });
         return axios
           .get(`http://localhost:3000/artists/${parentValue.artistId}`)
           .then(response => response.data);
       }
     }
-  }
+  })
 });
 
 const RootQuery = new GraphQLObjectType({
