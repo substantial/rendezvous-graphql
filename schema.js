@@ -67,6 +67,24 @@ const RootQuery = new GraphQLObjectType({
           .get(`http://localhost:3000/albums/${args.id}`)
           .then(response => response.data);
       }
+    },
+    allArtists: {
+      type: new GraphQLList(ArtistType),
+      args: {},
+      resolve() {
+        return axios
+          .get(`http://localhost:3000/artists`)
+          .then(response => response.data);
+      }
+    },
+    allAlbums: {
+      type: new GraphQLList(AlbumType),
+      args: {},
+      resolve() {
+        return axios
+          .get(`http://localhost:3000/albums`)
+          .then(response => response.data);
+      }
     }
   }
 });
