@@ -17,3 +17,16 @@ const ArtistType = new GraphQLObjectType({
     name: { type: GraphQLStringType }
   }
 });
+
+const RootQuery = new GraphQLObjectType({
+  name: "RootQueryType",
+  fields: {
+    artist: {
+      type: ArtistType,
+      args: {
+        id: GraphQLStringType
+      },
+      resolve() {}
+    }
+  }
+});
