@@ -10,26 +10,33 @@ const {
   GraphQLNonNull
 } = graphql;
 
-const AlbumType = new GraphQLObjectType({
-  name: "Album",
-  fields: {
-    id: { type: GraphQLString },
-    title: { type: GraphQLString }
-  }
-});
+const fetchData = async path => {
+  const { data } = await axios.get(`http://localhost:3000/${path}`);
+  return data;
+};
 
 const ArtistType = new GraphQLObjectType({
   name: "Artist",
-  fields: {
+  fields: () => ({
     id: { type: GraphQLString },
-    name: { type: GraphQLString }
-  }
+    name: { type: GraphQLString },
+    albums: {
+      type: new GraphQLList(AlbumType),
+      resolve: async (parentValue, args) => {
+        console.log("Artist", { parentValue, args });
+        return fetchData(`artists/${parentValue.id}/albums`);
+      }
+    }
+  })
 });
 
-const fetchData = async path => {
-  const res = await axios.get(`http://localhost:3000/${path}`);
-  return res.data;
-};
+const AlbumType = new GraphQLObjectType({
+  name: "Album",
+  fields: () => ({
+    id: { type: GraphQLString },
+    title: { type: GraphQLString }
+  })
+});
 
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
@@ -40,7 +47,7 @@ const RootQuery = new GraphQLObjectType({
         id: { type: GraphQLString }
       },
       resolve: async (parentValue, args) => {
-        console.log("Root Artists", { parentValue, args });
+        // console.log("Root Artists", { parentValue, args });
         return await fetchData(`artists/${args.id}`);
       }
     },
@@ -50,7 +57,7 @@ const RootQuery = new GraphQLObjectType({
         id: { type: GraphQLString }
       },
       resolve: async (parentValue, args) => {
-        console.log("Root Albums", { parentValue, args });
+        // console.log("Root Albums", { parentValue, args });
         return await fetchData(`albums/${args.id}`);
       }
     },
