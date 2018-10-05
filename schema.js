@@ -15,6 +15,11 @@ const fetchData = async path => {
   return data;
 };
 
+const writeData = async (path, body) => {
+  const { data } = await axios.post(`http://localhost:3000/${path}`, body);
+  return data;
+};
+
 const ArtistType = new GraphQLObjectType({
   name: "Artist",
   fields: () => ({
@@ -24,7 +29,7 @@ const ArtistType = new GraphQLObjectType({
       type: new GraphQLList(AlbumType),
       resolve: async (parentValue, args) => {
         // console.log("Artist", { parentValue, args });
-        return fetchData(`artists/${parentValue.id}/albums`);
+        return await fetchData(`artists/${parentValue.id}/albums`);
       }
     }
   })
@@ -39,7 +44,7 @@ const AlbumType = new GraphQLObjectType({
       type: ArtistType,
       resolve: async (parentValue, args) => {
         // console.log("Album", { parentValue, args });
-        return fetchData(`artists/${parentValue.artistId}`);
+        return await fetchData(`artists/${parentValue.artistId}`);
       }
     }
   })
@@ -93,7 +98,10 @@ const mutation = new GraphQLObjectType({
       args: {
         name: { type: new GraphQLNonNull(GraphQLString) }
       },
-      resolve: async () => {}
+      resolve: async (parentValue, args) => {
+        console.log("addArtist", { parentValue, args });
+        return await writeData("artists", { name: args.name });
+      }
     }
   }
 });
