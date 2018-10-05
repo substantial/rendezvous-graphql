@@ -23,7 +23,7 @@ const ArtistType = new GraphQLObjectType({
     albums: {
       type: new GraphQLList(AlbumType),
       resolve: async (parentValue, args) => {
-        console.log("Artist", { parentValue, args });
+        // console.log("Artist", { parentValue, args });
         return fetchData(`artists/${parentValue.id}/albums`);
       }
     }
@@ -38,7 +38,7 @@ const AlbumType = new GraphQLObjectType({
     artist: {
       type: ArtistType,
       resolve: async (parentValue, args) => {
-        console.log("Album", { parentValue, args });
+        // console.log("Album", { parentValue, args });
         return fetchData(`artists/${parentValue.artistId}`);
       }
     }
@@ -51,7 +51,7 @@ const RootQuery = new GraphQLObjectType({
     artist: {
       type: ArtistType,
       args: {
-        id: { type: GraphQLString }
+        id: { type: new GraphQLNonNull(GraphQLString) }
       },
       resolve: async (parentValue, args) => {
         // console.log("Root Artists", { parentValue, args });
@@ -61,7 +61,7 @@ const RootQuery = new GraphQLObjectType({
     album: {
       type: AlbumType,
       args: {
-        id: { type: GraphQLString }
+        id: { type: new GraphQLNonNull(GraphQLString) }
       },
       resolve: async (parentValue, args) => {
         // console.log("Root Albums", { parentValue, args });
