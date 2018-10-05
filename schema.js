@@ -102,6 +102,18 @@ const mutation = new GraphQLObjectType({
         console.log("addArtist", { parentValue, args });
         return await writeData("artists", { name: args.name });
       }
+    },
+    addAlbum: {
+      type: AlbumType,
+      args: {
+        title: { type: new GraphQLNonNull(GraphQLString) },
+        artistId: { type: new GraphQLNonNull(GraphQLString) }
+      },
+      resolve: async (parentValue, args) => {
+        return await writeData(`artists/${args.artistId}/albums`, {
+          title: args.title
+        });
+      }
     }
   }
 });
